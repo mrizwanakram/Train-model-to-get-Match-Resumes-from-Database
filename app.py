@@ -11,13 +11,13 @@ from fuzzywuzzy import fuzz
 app = Flask(__name__)
 
 # Load the trained model
-model = load_model('resume_model.keras')
+model = load_model('models/resume_model.keras')
 
 # Initialize the Tokenizer and fit it on your training data
 tokenizer = Tokenizer()
 
 # Load the original training dataset to fit the tokenizer
-original_training_data = pd.read_csv('cleaned_resume_dataset.csv')
+original_training_data = pd.read_csv('data/cleaned_resume_dataset.csv')
 tokenizer.fit_on_texts(original_training_data['pdf_name'])  # Assuming 'pdf_name' contains the text data
 
 # Initialize Label Encoders
@@ -105,7 +105,7 @@ def home():
 @app.route('/match', methods=['POST'])
 def match():
     job_description = request.form['job_description']
-    data = pd.read_csv('cleaned_resume_dataset.csv')  # Load the dataset
+    data = pd.read_csv('data/cleaned_resume_dataset.csv')  # Load the dataset
     top_matching_resumes = match_resumes_with_job_description(job_description, data)
 
     return jsonify(top_matching_resumes)
